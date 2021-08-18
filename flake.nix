@@ -9,7 +9,7 @@
       leanPkgs = lean.packages.${system};
       pkg = leanPkgs.buildLeanPackage {
         name = "LeanPlay";  # must match the name of the top-level .lean file
-        src = ./.;
+        src = ./src;
       };
     in {
       packages = pkg // {
