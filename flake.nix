@@ -12,12 +12,17 @@
       url = github:numtide/flake-utils;
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    lake = {
+      url = github:yatima-inc/lake/acs/add-nix-flake-build;
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
   };
 
-  outputs = { self, lean, flake-utils, nixpkgs }: flake-utils.lib.eachDefaultSystem (system:
+  outputs = { self, lean, flake-utils, nixpkgs, lake }: flake-utils.lib.eachDefaultSystem (system:
     let
       leanPkgs = lean.packages.${system};
+      lakeApps = lake.apps.${system};
       pkgs = import nixpkgs { inherit system; };
       pkg = leanPkgs.buildLeanPackage {
         name = "LeanPlay"; # must match the name of the top-level .lean file
@@ -28,6 +33,8 @@
       packages = pkg // {
         inherit (leanPkgs) lean;
       };
+
+      apps = lakeApps;
 
       defaultPackage = pkg.modRoot;
       devShell = pkgs.mkShell {
