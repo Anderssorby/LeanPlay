@@ -23,6 +23,7 @@
     let
       leanPkgs = lean.packages.${system};
       lakeApps = lake.apps.${system};
+      lakeExe = lake.packages.${system}.lakeProject.executable;
       pkgs = import nixpkgs { inherit system; };
       pkg = leanPkgs.buildLeanPackage {
         name = "LeanPlay"; # must match the name of the top-level .lean file
@@ -38,7 +39,7 @@
 
       defaultPackage = pkg.modRoot;
       devShell = pkgs.mkShell {
-        buildInputs = with leanPkgs; [ lean ];
+        buildInputs = with leanPkgs; [ lean lakeExe ];
       };
     });
 }

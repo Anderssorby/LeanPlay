@@ -69,11 +69,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1632424755,
-        "narHash": "sha256-9+KIvMXhjM+APWeYJjd4VmnXmb/yDPvFAX0xVVy5RI8=",
+        "lastModified": 1632570477,
+        "narHash": "sha256-n9lVu7Vk42CGyJ7ovUWqzuXAcvPV+s2DI4KOCGhylJY=",
         "owner": "yatima-inc",
         "repo": "lake",
-        "rev": "751a1825eff51a78671f551b0e547019d9968233",
+        "rev": "214faee19d64353569a5c10343a0fc71a07d69ff",
         "type": "github"
       },
       "original": {
@@ -151,11 +151,11 @@
         "temci": "temci_2"
       },
       "locked": {
-        "lastModified": 1632407575,
-        "narHash": "sha256-bdojBYmeFcKnW7hHH8Yuq+PSGSOIk+5Z2F4NAEhOor0=",
+        "lastModified": 1632556790,
+        "narHash": "sha256-erJQ9HZV3a8tJZo3WDPmrFfhWU92lrX5SVlHPAdakfA=",
         "owner": "leanprover",
         "repo": "lean4",
-        "rev": "a8207e52a90cbb87bdda1a3b5a5f83c1d8bb5229",
+        "rev": "e6927253cf7c719940b1847851d40eb3be640632",
         "type": "github"
       },
       "original": {
@@ -300,11 +300,11 @@
     },
     "nixpkgs_3": {
       "locked": {
-        "lastModified": 1632291606,
-        "narHash": "sha256-oEN24XJYAFK9tsD13TzLEizpgQigEfgC6i9x1b/1pVU=",
+        "lastModified": 1632418649,
+        "narHash": "sha256-4rZspkiQU7zbsuciRRMgoEPkAF/+FSv2jx/VIPxPVx4=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "83413f47809790e4ca012e314e7782adeae36cf2",
+        "rev": "056a3c1fae30d06d14b171b9023743c21a23ec1a",
         "type": "github"
       },
       "original": {
