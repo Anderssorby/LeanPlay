@@ -4,7 +4,6 @@
   inputs = {
     lean = {
       url = github:leanprover/lean4;
-      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     nixpkgs.url = github:nixos/nixpkgs/nixos-21.05;
@@ -14,6 +13,7 @@
     };
     lake = {
       url = github:yatima-inc/lake/acs/add-nix-flake-build;
+      inputs.lean.follows = "lean";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -25,8 +25,9 @@
       lakeApps = lake.apps.${system};
       lakeExe = lake.packages.${system}.lakeProject.executable;
       pkgs = import nixpkgs { inherit system; };
+      name = "LeanPlay";
       pkg = leanPkgs.buildLeanPackage {
-        name = "LeanPlay"; # must match the name of the top-level .lean file
+        inherit name; # must match the name of the top-level .lean file
         src = ./src;
       };
     in
@@ -35,7 +36,9 @@
         inherit (leanPkgs) lean;
       };
 
-      apps = lakeApps;
+      apps = lakeApps // {
+        ${name} = flake-utils.lib.mkApp pkg.executable;
+      };
 
       defaultPackage = pkg.modRoot;
       devShell = pkgs.mkShell {
