@@ -1,13 +1,10 @@
-import Leanpkg
-import Extern
-import Cli
+import LeanPlay.Cli
 
-#eval Leanpkg.leanVersionString
+-- #eval Leanpkg.leanVersionString
 
 def main (args : List String) : IO UInt32 := do
   try
-    Lake.setupLeanSearchPath
-    Lake.cli args
+    LeanPlay.cli args
     pure 0
   catch e =>
     IO.eprintln <| "error: " ++ toString e -- avoid "uncaught exception: ..."

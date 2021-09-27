@@ -1,17 +1,8 @@
+import LeanPlay.Help
+import LeanPlay.LeanVersion
+
+namespace LeanPlay
 open System
-
-
-structure CliOptions where
-  wantsHelp : Bool := false
-  dir : FilePath := "."
-  file : FilePath := pkgFileName
-  subArgs : List String := []
-
-abbrev CliM := CliT (StateT CliOptions IO)
-
-def command : (cmd : String) → CliM PUnit
-| "help"        => do IO.println <| help (← takeArg?)
-| cmd           => throw <| IO.userError s!"unknown command '{cmd}'"
 
 --------------------------------------------------------------------------------
 -- # CLI Transformer Definition
@@ -174,3 +165,97 @@ def processOptions : CliT m PUnit := do
   setArgs (← collectArgs).toList
 
 end CliT
+
+structure CliOptions where
+  wantsHelp : Bool := false
+  dir : FilePath := "."
+  file : FilePath := "play.lean"
+  subArgs : List String := []
+
+abbrev CliM := CliT (StateT CliOptions IO)
+
+namespace CliM
+open CliT
+
+def getDir : CliM FilePath :=
+  getThe CliOptions >>= (·.dir)
+
+def setDir (dir : FilePath) : CliM PUnit :=
+  modifyThe CliOptions fun st => {st with dir := dir}
+
+def getFile : CliM FilePath :=
+  getThe CliOptions >>= (·.file)
+
+def setFile (file : FilePath) : CliM PUnit :=
+  modifyThe CliOptions fun st => {st with file := file}
+
+def getSubArgs : CliM (List String) :=
+  getThe CliOptions >>= (·.subArgs)
+
+def setSubArgs (args : List String) : CliM PUnit :=
+  modifyThe CliOptions fun st => {st with subArgs := args}
+
+def getWantsHelp : CliM Bool :=
+  getThe CliOptions >>= (·.wantsHelp)
+
+def setWantsHelp : CliM PUnit :=
+  modifyThe CliOptions fun st => {st with wantsHelp := true}
+
+-- def getPkg (args : List String) : CliM Package := do
+--   Package.fromDir (← getDir) args (← getFile)
+
+def takeArg : CliM String := do
+  match (← takeArg?) with
+  | none => throw <| IO.userError "missing argument"
+  | some arg => arg
+
+def takeFileArg : CliM FilePath := do
+  match (← takeArg?) with
+  | none => throw <| IO.userError "missing file argument"
+  | some arg => arg
+
+def unknownShortOption (opt : Char) : CliM PUnit :=
+  throw <| IO.userError s!"unknown short option '-{opt}'"
+
+def shortOption : (opt : Char) → CliM PUnit
+| 'h' => setWantsHelp
+| 'd' => do setDir (← takeFileArg)
+| 'f' => do setFile (← takeFileArg)
+| opt => unknownShortOption opt
+
+def unknownLongOption (opt : String) : CliM PUnit :=
+  throw <| IO.userError s!"unknown long option '{opt}'"
+
+def longOption : (opt : String) → CliM PUnit
+| "--help"  => setWantsHelp
+| "--dir"   => do setDir (← takeFileArg)
+| "--file"  => do setFile (← takeFileArg)
+| "--"      => do setSubArgs (← takeArgs)
+| opt       => unknownLongOption opt
+
+def command : (cmd : String) → CliM PUnit
+| "help"        => do IO.println <| help (← CliT.takeArg?)
+| cmd           => throw <| IO.userError s!"unknown command '{cmd}'"
+
+def processArgs : CliM PUnit := do
+  match (← getArgs) with
+  | [] => IO.println usage
+  | ["--version"] => IO.println uiLeanVersionString
+  | _ => -- normal CLI
+    processOptions
+    match (← takeArg?) with
+    | none =>
+      if (← getWantsHelp) then IO.println usage else
+      throw <| IO.userError "expected command"
+    | some cmd =>
+      if (← getWantsHelp) then IO.println (help cmd) else
+      command cmd
+
+def run (self : CliM PUnit) (args : List String) : IO PUnit :=
+  CliT.run self args {shortOption, longOption, longShortOption := unknownLongOption} |>.run' {}
+
+end CliM
+
+
+def cli (args : List String) : IO PUnit :=
+  CliM.processArgs.run args

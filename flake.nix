@@ -37,8 +37,12 @@
       };
 
       apps = lakeApps // {
-        ${name} = flake-utils.lib.mkApp pkg.executable;
+        ${name} = flake-utils.lib.mkApp {
+          drv = pkg.executable;
+        };
       };
+
+      defaultApp = self.apps.${system}.${name};
 
       defaultPackage = pkg.modRoot;
       devShell = pkgs.mkShell {
