@@ -23,17 +23,25 @@
     let
       leanPkgs = lean.packages.${system};
       lakeApps = lake.apps.${system};
-      lakeExe = lake.packages.${system}.lakeProject.executable;
+      lakePkgs = lake.packages.${system};
+      lakeExe = lakePkgs.lakeProject.executable;
       pkgs = import nixpkgs { inherit system; };
       name = "LeanPlay";
+      cLib = import ./c/default.nix {};
       pkg = leanPkgs.buildLeanPackage {
         inherit name; # must match the name of the top-level .lean file
         src = ./src;
+        deps = [ lakePkgs.lakeProject ];
+        debug = true;
+        linkFlags = [];
+
+        staticLibDeps = [ cLib ];
       };
     in
     {
       packages = pkg // {
         inherit (leanPkgs) lean;
+        inherit cLib;
       };
 
       apps = lakeApps // {
@@ -46,7 +54,9 @@
 
       defaultPackage = pkg.modRoot;
       devShell = pkgs.mkShell {
-        buildInputs = with leanPkgs; [ lean lakeExe ];
+        buildInputs = with leanPkgs; [ leanPkgs.lean lakeExe ];
+        LEAN_PATH = "${leanPkgs.Lean.modRoot}:${lakePkgs.lakeProject.modRoot}";
+        CPATH = "${leanPkgs.Lean.modRoot}";
       };
     });
 }
