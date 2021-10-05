@@ -1,5 +1,26 @@
 {
   "nodes": {
+    "blake3": {
+      "inputs": {
+        "flake-utils": "flake-utils",
+        "nixpkgs": "nixpkgs",
+        "utils": "utils"
+      },
+      "locked": {
+        "lastModified": 1633396811,
+        "narHash": "sha256-BMxg7AnxcDx/u5auxXgBwrytnx0QfRO5+cop+ex0Hns=",
+        "owner": "yatima-inc",
+        "repo": "BLAKE3",
+        "rev": "2fd39ad24c72181d572e3f0bf495fede08f2a2ee",
+        "type": "github"
+      },
+      "original": {
+        "owner": "yatima-inc",
+        "ref": "acs/add-flake-setup",
+        "repo": "BLAKE3",
+        "type": "github"
+      }
+    },
     "flake-utils": {
       "locked": {
         "lastModified": 1631561581,
@@ -17,6 +38,21 @@
     },
     "flake-utils_2": {
       "locked": {
+        "lastModified": 1623875721,
+        "narHash": "sha256-A8BU7bjS5GirpAUv4QA+QnJ4CceLHkcXdRp4xITDB0s=",
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "rev": "f7e004a55b120c02ecb6219596820fcd32ca8772",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "type": "github"
+      }
+    },
+    "flake-utils_3": {
+      "locked": {
         "lastModified": 1631561581,
         "narHash": "sha256-3VQMV5zvxaVLvqqUrNz3iJelLw30mIVSfZmAaauM3dA=",
         "owner": "numtide",
@@ -30,7 +66,22 @@
         "type": "github"
       }
     },
-    "flake-utils_3": {
+    "flake-utils_4": {
+      "locked": {
+        "lastModified": 1631561581,
+        "narHash": "sha256-3VQMV5zvxaVLvqqUrNz3iJelLw30mIVSfZmAaauM3dA=",
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "rev": "7e5bf3925f6fbdfaf50a2a7ca0be2879c4261d19",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "type": "github"
+      }
+    },
+    "flake-utils_5": {
       "locked": {
         "lastModified": 1623875721,
         "narHash": "sha256-A8BU7bjS5GirpAUv4QA+QnJ4CceLHkcXdRp4xITDB0s=",
@@ -47,7 +98,7 @@
     },
     "lake": {
       "inputs": {
-        "flake-utils": "flake-utils_2",
+        "flake-utils": "flake-utils_4",
         "lean": [
           "lean"
         ],
@@ -72,11 +123,11 @@
     },
     "lean": {
       "inputs": {
-        "flake-utils": "flake-utils_3",
+        "flake-utils": "flake-utils_5",
         "lean-stage0": "lean-stage0",
         "mdBook": "mdBook",
         "nix": "nix",
-        "nixpkgs": "nixpkgs_2",
+        "nixpkgs": "nixpkgs_5",
         "temci": "temci"
       },
       "locked": {
@@ -140,10 +191,28 @@
         "type": "github"
       }
     },
+    "naersk": {
+      "inputs": {
+        "nixpkgs": "nixpkgs_2"
+      },
+      "locked": {
+        "lastModified": 1623927034,
+        "narHash": "sha256-sGxlmfp5eXL5sAMNqHSb04Zq6gPl+JeltIZ226OYN0w=",
+        "owner": "nmattia",
+        "repo": "naersk",
+        "rev": "e09c320446c5c2516d430803f7b19f5833781337",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nmattia",
+        "repo": "naersk",
+        "type": "github"
+      }
+    },
     "nix": {
       "inputs": {
         "lowdown-src": "lowdown-src",
-        "nixpkgs": "nixpkgs"
+        "nixpkgs": "nixpkgs_4"
       },
       "locked": {
         "lastModified": 1632746661,
@@ -161,6 +230,51 @@
     },
     "nixpkgs": {
       "locked": {
+        "lastModified": 1633083543,
+        "narHash": "sha256-thXKms0SvDirYb8/Hw0zqAE1TsuSFWd0y51mSzkPGLU=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "92609f3d9bc3acffbdbe54fa1c591a885612aa73",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "nixos-21.05",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs_2": {
+      "locked": {
+        "lastModified": 1626198252,
+        "narHash": "sha256-OF9Adtb2puee7EqFTcWnNxlnfjSrDuUawgc0s+kKfiQ=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "81e24d81e47fb7608f7935d6f4ace6f64681c31c",
+        "type": "github"
+      },
+      "original": {
+        "id": "nixpkgs",
+        "type": "indirect"
+      }
+    },
+    "nixpkgs_3": {
+      "locked": {
+        "lastModified": 1626198252,
+        "narHash": "sha256-OF9Adtb2puee7EqFTcWnNxlnfjSrDuUawgc0s+kKfiQ=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "81e24d81e47fb7608f7935d6f4ace6f64681c31c",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs_4": {
+      "locked": {
         "lastModified": 1628689438,
         "narHash": "sha256-YMINW6YmubHZVdliGsAJpnnMYXRrvppv59LgwtnyYhs=",
         "owner": "NixOS",
@@ -174,7 +288,7 @@
         "type": "indirect"
       }
     },
-    "nixpkgs_2": {
+    "nixpkgs_5": {
       "locked": {
         "lastModified": 1628085532,
         "narHash": "sha256-X639O/RVYRdasl+nYR80KCn5OqTNdeDfvsYECtSZVLQ=",
@@ -190,7 +304,7 @@
         "type": "github"
       }
     },
-    "nixpkgs_3": {
+    "nixpkgs_6": {
       "locked": {
         "lastModified": 1632918953,
         "narHash": "sha256-XY3TKBfhP7wCu/SeqrwIkTWkyYHy5W1yRR8pxyzRY9Y=",
@@ -208,10 +322,11 @@
     },
     "root": {
       "inputs": {
-        "flake-utils": "flake-utils",
+        "blake3": "blake3",
+        "flake-utils": "flake-utils_3",
         "lake": "lake",
         "lean": "lean",
-        "nixpkgs": "nixpkgs_3"
+        "nixpkgs": "nixpkgs_6"
       }
     },
     "temci": {
@@ -227,6 +342,26 @@
       "original": {
         "owner": "parttimenerd",
         "repo": "temci",
+        "type": "github"
+      }
+    },
+    "utils": {
+      "inputs": {
+        "flake-utils": "flake-utils_2",
+        "naersk": "naersk",
+        "nixpkgs": "nixpkgs_3"
+      },
+      "locked": {
+        "lastModified": 1626252346,
+        "narHash": "sha256-Atvn4gWBv2O7aMJWl9l8b3jMU84w5uwShizZu0WlWRs=",
+        "owner": "yatima-inc",
+        "repo": "nix-utils",
+        "rev": "0fde737c9c6d04533e70febf5b7b57fdd561a604",
+        "type": "github"
+      },
+      "original": {
+        "owner": "yatima-inc",
+        "repo": "nix-utils",
         "type": "github"
       }
     }

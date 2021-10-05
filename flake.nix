@@ -17,9 +17,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    blake3.url = github:yatima-inc/BLAKE3/acs/add-flake-setup;
+
   };
 
-  outputs = { self, lean, flake-utils, nixpkgs, lake }: flake-utils.lib.eachDefaultSystem (system:
+  outputs = { self, lean, flake-utils, nixpkgs, lake, blake3 }: flake-utils.lib.eachDefaultSystem (system:
     let
       leanPkgs = lean.packages.${system};
       lakeApps = lake.apps.${system};
@@ -27,15 +29,15 @@
       lakeExe = lakePkgs.lakeProject.executable;
       pkgs = import nixpkgs { inherit system; };
       name = "LeanPlay";
-      cLib = import ./c/default.nix {};
+      cLib = import ./c/default.nix { inherit pkgs; };
       pkg = leanPkgs.buildLeanPackage {
         inherit name; # must match the name of the top-level .lean file
         src = ./src;
         deps = [ lakePkgs.lakeProject ];
         debug = true;
-        linkFlags = [];
+        linkFlags = [ ];
 
-        staticLibDeps = [ cLib ];
+        staticLibDeps = [ cLib blake3 ];
       };
     in
     {
