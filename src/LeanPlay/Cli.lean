@@ -1,5 +1,6 @@
 import LeanPlay.Help
 import LeanPlay.LeanVersion
+import Blake3
 
 namespace LeanPlay
 open System

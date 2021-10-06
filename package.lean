@@ -1,3 +1,4 @@
+import Lake
 import Lake.Package
 import Lake.BuildTargets
 
@@ -17,7 +18,7 @@ def cLibTarget (pkgDir : FilePath) : FileTarget :=
   staticLibTarget (pkgDir / cLib) #[addOTarget pkgDir]
 
 def package : Packager := fun pkgDir args => {
-  name := "ffi"
+  name := "LeanPlay"
   version := "0.1"
   -- customize layout
   srcDir := "lib"

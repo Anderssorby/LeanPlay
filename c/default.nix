@@ -2,7 +2,7 @@
 let
   libName = "libLeanPlay.a";
   cLib = pkgs.stdenv.mkDerivation {
-    name = "${name}-cLib";
+    name = "LeanPlay-cLib";
     nativeBuildInputs = with pkgs; [ gcc ];
     src = ./.;
     buildPhase = ''
@@ -14,4 +14,4 @@ let
     '';
   };
 in
-  cLib
+cLib

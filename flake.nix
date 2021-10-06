@@ -26,18 +26,26 @@
       leanPkgs = lean.packages.${system};
       lakeApps = lake.apps.${system};
       lakePkgs = lake.packages.${system};
+      blake3-c = blake3.packages.${system}.BLAKE3-c;
       lakeExe = lakePkgs.lakeProject.executable;
       pkgs = import nixpkgs { inherit system; };
       name = "LeanPlay";
       cLib = import ./c/default.nix { inherit pkgs; };
+      blake3Mod = leanPkgs.buildLeanPackage {
+        name = "Blake3"; # must match the name of the top-level .lean file
+        src = ./src;
+        deps = [ leanPkgs ];
+        debug = true;
+        linkFlags = [ "-v -L${blake3-c}" ];
+        staticLibDeps = [ cLib blake3-c ];
+      };
       pkg = leanPkgs.buildLeanPackage {
         inherit name; # must match the name of the top-level .lean file
         src = ./src;
-        deps = [ lakePkgs.lakeProject ];
+        deps = [ lakePkgs.lakeProject blake3Mod ];
         debug = true;
-        linkFlags = [ ];
-
-        staticLibDeps = [ cLib blake3 ];
+        linkFlags = [ "-v -L${blake3-c}" ];
+        staticLibDeps = [ cLib blake3-c ];
       };
     in
     {
