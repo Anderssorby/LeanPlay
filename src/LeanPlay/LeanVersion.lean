@@ -1,3 +1,4 @@
+import Blake3
 
 namespace LeanPlay
 
@@ -33,3 +34,6 @@ def verifyLeanVersion : IO PUnit := do
         s!"expected {uiLeanVersionString}, but got {out.stdout.trim}"
   else
     throw <| IO.userError <| "missing lean!"
+
+def version := s!"Lean: {uiLeanVersionString}
+Blake3: {Blake3.version}"

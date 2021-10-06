@@ -241,7 +241,7 @@ def command : (cmd : String) → CliM PUnit
 def processArgs : CliM PUnit := do
   match (← getArgs) with
   | [] => IO.println usage
-  | ["--version"] => IO.println uiLeanVersionString
+  | ["--version"] => IO.println version
   | _ => -- normal CLI
     processOptions
     match (← takeArg?) with

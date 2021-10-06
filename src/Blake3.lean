@@ -17,7 +17,9 @@ constant Blake3Hasher : Type
 Version of the linked BLAKE3 implementation library.
 -/
 @[extern "blake3_version"]
-constant version : String
+constant internalVersion : Unit → String
+
+constant version : String := internalVersion Unit.unit
 
 /-
 Initialize a hasher.
