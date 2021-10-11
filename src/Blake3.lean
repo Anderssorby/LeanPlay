@@ -11,7 +11,7 @@ constant BLAKE3_MAX_DEPTH: UInt16 := 54
 
 
 @[extern "blake3_hasher"]
-constant Blake3Hasher : Type
+constant Blake3Hasher : Type := Unit
 
 /-
 Version of the linked BLAKE3 implementation library.

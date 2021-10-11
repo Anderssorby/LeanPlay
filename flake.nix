@@ -17,52 +17,51 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    blake3.url = github:yatima-inc/BLAKE3/acs/add-flake-setup;
-
+    blake3-c.url = github:yatima-inc/BLAKE3/acs/add-flake-setup;
+    blake3 = {
+      url = github:yatima-inc/lean-blake3;
+      inputs.lean.follows = "lean";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.blake3.follows = "blake3-c";
+    };
   };
 
-  outputs = { self, lean, flake-utils, nixpkgs, lake, blake3 }: flake-utils.lib.eachDefaultSystem (system:
+  outputs = { self, lean, flake-utils, nixpkgs, lake, blake3, blake3-c }: flake-utils.lib.eachDefaultSystem (system:
     let
       leanPkgs = lean.packages.${system};
       lakeApps = lake.apps.${system};
       lakePkgs = lake.packages.${system};
-      blake3-c = blake3.packages.${system}.BLAKE3-c;
+      blake3Mod = blake3.project.${system};
+      blake3-staticLib = blake3-c.packages.${system}.BLAKE3-c.staticLib;
       lakeExe = lakePkgs.lakeProject.executable;
       pkgs = import nixpkgs { inherit system; };
       name = "LeanPlay";
       cLib = import ./c/default.nix { inherit pkgs; };
-      blake3Mod = leanPkgs.buildLeanPackage {
-        name = "Blake3"; # must match the name of the top-level .lean file
-        src = ./src;
-        deps = [ leanPkgs ];
-        debug = true;
-        linkFlags = [ "-v -L${blake3-c}" ];
-        staticLibDeps = [ cLib blake3-c ];
-      };
-      pkg = leanPkgs.buildLeanPackage {
-        inherit name; # must match the name of the top-level .lean file
+      project = leanPkgs.buildLeanPackage {
+        inherit name;
         src = ./src;
         deps = [ lakePkgs.lakeProject blake3Mod ];
         debug = true;
-        linkFlags = [ "-v -L${blake3-c}" ];
-        staticLibDeps = [ cLib blake3-c ];
+        linkFlags = [ blake3-staticLib "-v" ];
+        staticLibDeps = [ ];
       };
     in
     {
-      packages = pkg // {
-        inherit (leanPkgs) lean;
+      packages = {
+        inherit project;
+        inherit (project) executable modRoot lean-package;
         inherit cLib;
       };
 
       apps = lakeApps // {
         ${name} = flake-utils.lib.mkApp {
-          drv = pkg.executable;
+          drv = project.executable;
         };
       };
 
       defaultApp = self.apps.${system}.${name};
 
-      defaultPackage = pkg.modRoot;
+      defaultPackage = project.modRoot;
       devShell = pkgs.mkShell {
         buildInputs = with leanPkgs; [ leanPkgs.lean lakeExe ];
         LEAN_PATH = "${leanPkgs.Lean.modRoot}:${lakePkgs.lakeProject.modRoot}";
