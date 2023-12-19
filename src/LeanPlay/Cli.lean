@@ -12,7 +12,7 @@ open System
 -- Involves trickery patterned after `MacroM`
 -- to allow `BuildMethods` to refer to `BuildM`
 
-constant CliMethodsRefPointed : PointedType.{0}
+def CliMethodsRefPointed : PointedType.{0}
 def CliMethodsRef (m : Type → Type v) : Type := CliMethodsRefPointed.type
 
 abbrev CliT (m : Type → Type v) :=
@@ -35,7 +35,7 @@ unsafe def mkImp (methods : CliMethods m) : CliMethodsRef m :=
   unsafeCast methods
 
 @[implementedBy mkImp]
-constant mk (methods : CliMethods m) : CliMethodsRef m :=
+def mk (methods : CliMethods m) : CliMethodsRef m :=
   CliMethodsRefPointed.val
 
 instance : Coe (CliMethods m) (CliMethodsRef m) := ⟨mk⟩
@@ -45,7 +45,7 @@ unsafe def getImp [Pure m] (self : CliMethodsRef m) : CliMethods m :=
   unsafeCast self
 
 @[implementedBy getImp]
-constant get [Pure m] (self : CliMethodsRef m) : CliMethods m
+def get [Pure m] (self : CliMethodsRef m) : CliMethods m
 
 end CliMethodsRef
 
